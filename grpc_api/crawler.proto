@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "artyomliou/ptt-sale-bot/grpc_api";
+
+package grpc_api;
+
+service Crawler {
+  rpc AddTarget (AddTargetRequest) returns (AddTargetReply) {}
+}
+
+message AddTargetRequest {
+  string url = 1;
+}
+
+message AddTargetReply {
+  bool ok = 1;
+}

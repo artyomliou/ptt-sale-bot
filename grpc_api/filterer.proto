@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "artyomliou/ptt-sale-bot/grpc_api";
+
+package grpc_api;
+
+service Filterer {
+  rpc AddInterestTopic (AddInterestTopicRequest) returns (AddInterestTopicReply) {}
+}
+message AddInterestTopicRequest {
+  string name = 1;
+  repeated string patterns = 2;
+}
+
+message AddInterestTopicReply {
+  bool ok = 1;
+}
