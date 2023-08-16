@@ -27,8 +27,8 @@ func main() {
 	flag.StringVar(&url, "url", "", "Webpage URL")
 	flag.StringVar(&topicName, "topic-name", "", "Topic name")
 	flag.StringVar(&topicPatternString, "topic-patterns", "", "Topic patterns, separated by comma.")
-	topicPatterns = strings.Split(topicPatternString, ",")
 	flag.Parse()
+	topicPatterns = strings.Split(topicPatternString, ",")
 
 	// connect to grpc server over socket
 	address := fmt.Sprintf("unix://%s", grpc_api.SocketPath)
