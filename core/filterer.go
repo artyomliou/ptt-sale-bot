@@ -3,6 +3,7 @@ package core
 import (
 	"context"
 	"log"
+	"strings"
 
 	mapset "github.com/deckarep/golang-set/v2"
 )
@@ -52,8 +53,10 @@ func (f *filterer) handle(articles []*Article) {
 
 	for _, article := range articles {
 
-		// wont notify a notified article twice
-		if f.deduplicateLinks.Contains(article.Link) {
+		if f.skipIfArticleHasBeenFiltered(article) {
+			continue
+		}
+		if f.skipIfTitleContainKeyword(article) {
 			continue
 		}
 
@@ -78,4 +81,22 @@ func (f *filterer) handle(articles []*Article) {
 	}
 
 	f.Output <- matchedArticles
+}
+
+func (f *filterer) skipIfArticleHasBeenFiltered(article *Article) bool {
+	return f.deduplicateLinks.Contains(article.Link)
+}
+
+func (f *filterer) skipIfTitleContainKeyword(article *Article) bool {
+	skipKeywords := []string{
+		"公告",
+		"黑名",
+		"遭竊",
+	}
+	for _, skipKeyword := range skipKeywords {
+		if strings.Contains(article.Title, skipKeyword) {
+			return true
+		}
+	}
+	return false
 }
