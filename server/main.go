@@ -39,6 +39,17 @@ func main() {
 	notifier.SetInput(filterer.Output)
 	notifier.Run()
 
+	go func() {
+		for {
+			select {
+			case <-notifier.Output:
+				//
+			case <-ctx.Done():
+				return
+			}
+		}
+	}()
+
 	crawlerApi := core.CrawlerApi{
 		Instance: crawler,
 	}

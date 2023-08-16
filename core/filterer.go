@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"log"
 
 	mapset "github.com/deckarep/golang-set/v2"
 )
@@ -18,7 +19,7 @@ func NewFilterer(ctx context.Context) *filterer {
 	return &filterer{
 		ctx:              ctx,
 		Input:            nil,
-		Output:           make(chan []*Article, 1),
+		Output:           make(chan []*Article),
 		interestTopics:   []InterestTopic{},
 		deduplicateLinks: mapset.NewSetWithSize[string](100),
 	}
@@ -39,6 +40,7 @@ func (f *filterer) Run() {
 			case articles := <-f.Input:
 				f.handle(articles)
 			case <-f.ctx.Done():
+				log.Println("[filterer] stop")
 				return
 			}
 		}

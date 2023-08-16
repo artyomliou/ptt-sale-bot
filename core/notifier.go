@@ -44,6 +44,7 @@ func (n *notifier) Run() {
 			case articles := <-n.Input:
 				n.handle(articles)
 			case <-n.ctx.Done():
+				log.Println("[notifier] stop")
 				return
 			}
 		}

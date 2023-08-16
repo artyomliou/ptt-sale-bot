@@ -17,7 +17,7 @@ func NewParser(ctx context.Context) *parser {
 	return &parser{
 		ctx:    ctx,
 		Input:  nil,
-		Output: make(chan []*Article, 1),
+		Output: make(chan []*Article),
 	}
 }
 
@@ -32,6 +32,7 @@ func (p *parser) Run() {
 			case page := <-p.Input:
 				p.execute(page)
 			case <-p.ctx.Done():
+				log.Println("[parser] stop")
 				return
 			}
 		}

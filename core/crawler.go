@@ -15,7 +15,7 @@ func NewCrawler(ctx context.Context) *crawler {
 		ctx:      ctx,
 		Interval: 5 * time.Minute,
 		targets:  []string{},
-		Output:   make(chan *Page, 1),
+		Output:   make(chan *Page),
 	}
 }
 
@@ -38,6 +38,7 @@ func (c *crawler) Run() {
 			case <-ticker.C:
 				c.execute()
 			case <-c.ctx.Done():
+				log.Println("[crawler] stop")
 				return
 			}
 		}
